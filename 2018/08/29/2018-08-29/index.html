@@ -79,16 +79,19 @@
 
 
 
-<meta name="description" content="Python Coding 🐶">
-<meta property="og:type" content="website">
+<meta name="description" content="List对象  变长对象的可变对象类似PyListObject: vector&amp;lt;PyObject*&amp;gt;  数据定义[Include/listobject.h] 创建list时，不是存多少东西申请多大内存，而是一次申请一大块内存。（内存管理策略，提高效率）申请的内存能存下多少个PyObject存放在allocated中 allocated申请内存块总共能存放的对象数量PyObject_V">
+<meta property="og:type" content="article">
 <meta property="og:title" content="尹金都的博客">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:url" content="http://yoursite.com/2018/08/29/2018-08-29/index.html">
 <meta property="og:site_name" content="尹金都的博客">
-<meta property="og:description" content="Python Coding 🐶">
+<meta property="og:description" content="List对象  变长对象的可变对象类似PyListObject: vector&amp;lt;PyObject*&amp;gt;  数据定义[Include/listobject.h] 创建list时，不是存多少东西申请多大内存，而是一次申请一大块内存。（内存管理策略，提高效率）申请的内存能存下多少个PyObject存放在allocated中 allocated申请内存块总共能存放的对象数量PyObject_V">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2018/08/29/2018-08-29/media/15344889582415/15353717326456.jpg">
+<meta property="og:updated_time" content="2018-08-29T07:56:50.477Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="尹金都的博客">
-<meta name="twitter:description" content="Python Coding 🐶">
+<meta name="twitter:description" content="List对象  变长对象的可变对象类似PyListObject: vector&amp;lt;PyObject*&amp;gt;  数据定义[Include/listobject.h] 创建list时，不是存多少东西申请多大内存，而是一次申请一大块内存。（内存管理策略，提高效率）申请的内存能存下多少个PyObject存放在allocated中 allocated申请内存块总共能存放的对象数量PyObject_V">
+<meta name="twitter:image" content="http://yoursite.com/2018/08/29/2018-08-29/media/15344889582415/15353717326456.jpg">
 
 
 
@@ -118,13 +121,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/08/29/2018-08-29/"/>
 
 
 
 
 
-  <title>尹金都的博客</title>
+  <title> | 尹金都的博客</title>
   
 
 
@@ -153,8 +156,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -257,9 +259,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -289,9 +291,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/29/2018-08-29/" itemprop="url">未命名</a></h1>
+          <h1 class="post-title" itemprop="name headline"></h1>
         
 
         <div class="post-meta">
@@ -352,9 +352,7 @@
       
 
       
-        
-          
-            <ol start="7">
+        <ol start="7">
 <li>List对象  变长对象的可变对象<br>类似PyListObject: vector&lt;PyObject*&gt;</li>
 </ol>
 <h3 id="数据定义"><a href="#数据定义" class="headerlink" title="数据定义"></a>数据定义</h3><p>[Include/listobject.h]</p>
@@ -363,8 +361,6 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">typedef struct &#123;</span><br><span class="line">    //变长对象</span><br><span class="line">    PyObject_VAR_HEAD</span><br><span class="line">    /* Vector of pointers to list elements.  list[0] is ob_item[0], etc. */</span><br><span class="line">    //ob_item为指向元素列表的指针，实际上，Python中的list[0]就是ob_item[0]</span><br><span class="line">    //PyObject**是指向指针的指针，确保list可以同时管理不同类型的元素对象，而不像C++的向量，</span><br><span class="line">    //只能管理同一类型的元素对象。实际上，它是一个指向PyObject数组类型的指针，这样才能做到list元素的随机访问。</span><br><span class="line">    PyObject **ob_item;</span><br><span class="line"></span><br><span class="line">    /* ob_item contains space for &apos;allocated&apos; elements.  The number</span><br><span class="line">     * currently in use is ob_size.</span><br><span class="line">     * Invariants:</span><br><span class="line">     *     0 &lt;= ob_size &lt;= allocated</span><br><span class="line">     *     len(list) == ob_size</span><br><span class="line">     *     ob_item == NULL implies ob_size == allocated == 0</span><br><span class="line">     * list.sort() temporarily sets allocated to -1 to detect mutations.</span><br><span class="line">     *</span><br><span class="line">     * Items must normally not be NULL, except during construction when</span><br><span class="line">     * the list is not yet visible outside the function that builds it.</span><br><span class="line">     */</span><br><span class="line">    //维护了当前列表中的可容纳的元素的总数</span><br><span class="line">    Py_ssize_t allocated;</span><br><span class="line">&#125; PyListObject;</span><br></pre></td></tr></table></figure>
 <p>数据结构<br><img src="media/15344889582415/15353717326456.jpg" alt=""></p>
 
-          
-        
       
     </div>
     
@@ -381,151 +377,28 @@
       
 
       
-
-      
-
       
       
-        <div class="post-eof"></div>
+
       
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/17/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="尹金都">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="尹金都的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/17/hello-world/" itemprop="url">Hello World</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-17T18:25:10+08:00">
-                2018-08-17
-              </time>
+              <a href="/2018/08/17/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
             
+          </div>
 
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
             
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/08/17/hello-world/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/08/17/hello-world/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -535,10 +408,11 @@
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -546,6 +420,20 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -566,8 +454,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -623,6 +520,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据定义"><span class="nav-number">1.</span> <span class="nav-text">数据定义</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -763,6 +676,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -780,6 +697,18 @@
       <script id="dsq-count-scr" src="https://.disqus.com/count.js" async></script>
     
 
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2018/08/29/2018-08-29/';
+          this.page.identifier = '2018/08/29/2018-08-29/';
+          this.page.title = '';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
     
 
   
